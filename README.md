@@ -29,6 +29,42 @@ Create a HTML file to implement form based input and output.
 Publish the website in the given URL.
 
 # PROGRAM :
+## views.py
+~~~
+from django.shortcuts import render
+
+def triangle_area(request):
+    area = None
+    if request.method == "POST":
+        # Get the base and height from the form
+        base = request.POST.get("base")
+        height = request.POST.get("height")
+        
+        # Check if both values are provided
+        if base and height:
+            try:
+                base = float(base)
+                height = float(height)
+                # Calculate the area of the triangle
+                area = 0.5 * base * height
+            except ValueError:
+                # If conversion to float fails, set area to None
+                area = None
+    
+    # Render the template with the area value
+    return render(request, 'triangle_area.html', {'area': area})
+
+~~~
+## urls.py
+~~~
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.triangle_area, name='triangle_area'),
+]
+~~~
+## html
 ~~~
 <!DOCTYPE html>
 <html lang="en">
